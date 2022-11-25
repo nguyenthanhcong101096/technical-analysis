@@ -67,6 +67,8 @@ module TechnicalAnalysis
       smoothing_period = period - 1
 
       data.each do |v|
+        break if output == 2
+  
         price_change = (v[price_key] - prev_price)
         price_changes << price_change
 

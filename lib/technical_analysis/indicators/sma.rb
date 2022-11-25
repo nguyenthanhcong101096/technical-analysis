@@ -65,6 +65,8 @@ module TechnicalAnalysis
       period_values = []
 
       data.each do |v|
+        break if output == 2
+
         period_values << v[price_key]
         if period_values.size == period
           output << SmaValue.new(date_time: v[date_time_key], sma: ArrayHelper.average(period_values))
