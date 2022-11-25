@@ -83,27 +83,27 @@ You can call methods on the class of the specific technical indicator that you w
 ```ruby
 input_data = SpecHelper.get_test_data(:close)
 
-TechnicalAnalysis::Sma.calculate(input_data, period: 30, price_key: :close)
+IndicatorBinance::Sma.calculate(input_data, period: 30, price_key: :close)
 ```
 
 Here are examples of other methods for technical indicators:
 
 ```ruby
-TechnicalAnalysis::Sma.indicator_symbol
+IndicatorBinance::Sma.indicator_symbol
 # "sma"
 
-TechnicalAnalysis::Sma.indicator_name
+IndicatorBinance::Sma.indicator_name
 # "Simple Moving Average"
 
-TechnicalAnalysis::Sma.valid_options
+IndicatorBinance::Sma.valid_options
 # [:period, :price_key]
 
 options = { period: 30, price_key: :close }
-TechnicalAnalysis::Sma.validate_options(options)
+IndicatorBinance::Sma.validate_options(options)
 # true
 
 options = { period: 30, price_key: :close }
-TechnicalAnalysis::Sma.min_data_size(options)
+IndicatorBinance::Sma.min_data_size(options)
 # 30
 ```
 
@@ -120,7 +120,7 @@ The `calculate` method on the `Indicator` class accepts:
 input_data = SpecHelper.get_test_data(:close)
 options = { period: 30, price_key: :close }
 
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :technicals, options)
+IndicatorBinance::Indicator.calculate('sma', input_data, :technicals, options)
 ```
 
 Here's each example again using the generic indicator class:
@@ -128,29 +128,29 @@ Here's each example again using the generic indicator class:
 ```ruby
 input_data = SpecHelper.get_test_data(:close)
 
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :indicator_symbol)
+IndicatorBinance::Indicator.calculate('sma', input_data, :indicator_symbol)
 # "sma"
 
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :indicator_name)
+IndicatorBinance::Indicator.calculate('sma', input_data, :indicator_name)
 # "Simple Moving Average"
 
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :valid_options)
+IndicatorBinance::Indicator.calculate('sma', input_data, :valid_options)
 # [:period, :price_key]
 
 options = { period: 30, price_key: :close }
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :validate_options, options)
+IndicatorBinance::Indicator.calculate('sma', input_data, :validate_options, options)
 # true
 
 options = { period: 30, price_key: :close }
-TechnicalAnalysis::Indicator.calculate('sma', input_data, :min_data_size, options)
+IndicatorBinance::Indicator.calculate('sma', input_data, :min_data_size, options)
 # 30
 ```
 
 Or you can use it to find the correct technical indicator class based on indicator symbol:
 
 ```ruby
-simple_moving_average = TechnicalAnalysis::Indicator.find("sma")
-# TechnicalAnalysis::Sma
+simple_moving_average = IndicatorBinance::Indicator.find("sma")
+# IndicatorBinance::Sma
 
 input_data = SpecHelper.get_test_data(:close)
 simple_moving_average.calculate(input_data, period: 30, price_key: :close)
