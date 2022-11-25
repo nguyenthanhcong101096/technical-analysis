@@ -65,7 +65,7 @@ module IndicatorBinance
       period_values = []
 
       data.each do |v|
-        break if output == 2
+        break if output >= 2
 
         period_values << v[price_key]
         if period_values.size == period
