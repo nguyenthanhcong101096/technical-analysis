@@ -24,7 +24,7 @@ module IndicatorBinance
       period.to_i
     end
 
-    def self.calculate(data: [], period: 30, price_key: :close_price, date_time_key: :start_time)
+    def self.single_sma(data: [], period: 30, price_key: :close_price, date_time_key: :start_time)
       period        = period.to_i
       price_key     = price_key.to_sym
       date_time_key = date_time_key.to_sym
@@ -38,9 +38,9 @@ module IndicatorBinance
       )
     end
 
-    def self.double_calculate(data = [], small_period = 5, big_period = 10)
-      sma_small = calculate(data: data, period: small_period)
-      sma_big   = calculate(data: data, period: big_period)
+    def self.double_sma(data = [], small_period = 5, big_period = 10)
+      sma_small = single_sma(data: data, period: small_period)
+      sma_big   = single_sma(data: data, period: big_period)
       current   = DSMA.new(sma_small.current.start_time, sma_small.current.value, sma_big.current.value)
       pervious  = DSMA.new(sma_small.previous.start_time, sma_small.previous.value, sma_big.previous.value)
 
