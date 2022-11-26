@@ -1,73 +1,39 @@
 module IndicatorBinance
-  # Relative Strength Index
-  class Rsi < Indicator
+  OBJECT = Struct.new(:start_time, :period, :value)
 
-    # Returns the symbol of the technical indicator
-    #
-    # @return [String] A string of the symbol of the technical indicator
+  class Rsi < Indicator
     def self.indicator_symbol
       "rsi"
     end
 
-    # Returns the name of the technical indicator
-    #
-    # @return [String] A string of the name of the technical indicator
     def self.indicator_name
       "Relative Strength Index"
     end
 
-    # Returns an array of valid keys for options for this technical indicator
-    #
-    # @return [Array] An array of keys as symbols for valid options for this technical indicator
     def self.valid_options
       %i(period price_key date_time_key)
     end
 
-    # Validates the provided options for this technical indicator
-    #
-    # @param options [Hash] The options for the technical indicator to be validated
-    #
-    # @return [Boolean] Returns true if options are valid or raises a ValidationError if they're not
     def self.validate_options(options)
       Validation.validate_options(options, valid_options)
     end
 
-    # Calculates the minimum number of observations needed to calculate the technical indicator
-    #
-    # @param options [Hash] The options for the technical indicator
-    #
-    # @return [Integer] Returns the minimum number of observations needed to calculate the technical
-    #    indicator based on the options provided
     def self.min_data_size(period: 14, **params)
       period.to_i + 1
     end
 
-    # Calculates the relative strength index for the data over the given period
-    # https://en.wikipedia.org/wiki/Relative_strength_index
-    #
-    # @param data [Array] Array of hashes with keys (:date_time, :value)
-    # @param period [Integer] The given period to calculate the RSI
-    # @param price_key [Symbol] The hash key for the price data. Default :value
-    # @param date_time_key [Symbol] The hash key for the date time data. Default :date_time
-    #
-    # @return [Array<RsiValue>] An array of RsiValue instances
-    def self.calculate(data, period: 14, price_key: :value, date_time_key: :date_time)
-      period = period.to_i
-      price_key = price_key.to_sym
-      Validation.validate_numeric_data(data, price_key)
-      Validation.validate_length(data, min_data_size(period: period))
-      Validation.validate_date_time_key(data, date_time_key)
-
-      data = data.sort_by { |row| row[date_time_key] }
-
-      output = []
-      prev_price = data.shift[price_key]
-      prev_avg = nil
-      price_changes = []
+    def self.calculate(data: [], period: 14, price_key: :close_price, date_time_key: :start_time, precision: 2)
+      period           = period.to_i
+      price_key        = price_key.to_sym
+      data             = data.sort_by { |row| row[date_time_key] }
+      output           = []
+      prev_price       = data.shift[price_key]
+      prev_avg         = nil
+      price_changes    = []
       smoothing_period = period - 1
 
       data.each do |v|
-        break if output.size >= 2
+        break if output.size >= 1
   
         price_change = (v[price_key] - prev_price)
         price_changes << price_change
@@ -99,7 +65,9 @@ module IndicatorBinance
             rsi = (100.00 - (100.00 / (1.00 + rs)))
           end
 
-          output << RsiValue.new(date_time: v[date_time_key], rsi: rsi)
+          start_time = Time.at(v[date_time_key] / 1000).to_s
+
+          output << OBJECT.new(start_time, period, rsi.round(precision))
 
           prev_avg = { gain: avg_gain, loss: avg_loss }
           price_changes.shift
@@ -108,29 +76,7 @@ module IndicatorBinance
         prev_price = v[price_key]
       end
 
-      output.sort_by(&:date_time).reverse
+      output.sort_by(&:start_time).reverse.first
     end
-
-  end
-
-  # The value class to be returned by calculations
-  class RsiValue
-
-    # @return [String] the date_time of the obversation as it was provided
-    attr_accessor :date_time
-
-    # @return [Float] the rsi calculation value
-    attr_accessor :rsi
-
-    def initialize(date_time: nil, rsi: nil)
-      @date_time = date_time
-      @rsi = rsi
-    end
-
-    # @return [Hash] the attributes as a hash
-    def to_hash
-      { date_time: @date_time, rsi: @rsi }
-    end
-
   end
 end
