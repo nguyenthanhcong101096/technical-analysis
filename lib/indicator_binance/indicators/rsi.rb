@@ -51,7 +51,7 @@ module IndicatorBinance
     # @param date_time_key [Symbol] The hash key for the date time data. Default :date_time
     #
     # @return [Array<RsiValue>] An array of RsiValue instances
-    def self.calculate(data, period: 14, price_key: :value, date_time_key: :date_time)
+    def self.calculate(data, period: 14, price_key: :close_price, date_time_key: :start_time)
       period = period.to_i
       price_key = price_key.to_sym
       Validation.validate_numeric_data(data, price_key)
