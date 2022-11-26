@@ -25,7 +25,7 @@ module IndicatorBinance
     def self.calculate(data: [], period: 14, price_key: :close_price, date_time_key: :start_time, precision: 2)
       period           = period.to_i
       price_key        = price_key.to_sym
-      data             = data.sort_by { |row| row[date_time_key] }
+      data             = data.sort_by { |row| -row[date_time_key] }
       output           = []
       prev_price       = data.shift[price_key]
       prev_avg         = nil
@@ -76,7 +76,7 @@ module IndicatorBinance
         prev_price = v[price_key]
       end
 
-      output.sort_by(&:start_time).reverse.first
+      output.sort_by(&:start_time).first
     end
   end
 end
