@@ -2,6 +2,7 @@ module IndicatorBinance
   OBJECT = Struct.new(:start_time, :period, :value)
 
   class Rsi < Indicator
+
     def self.indicator_symbol
       "rsi"
     end
@@ -32,14 +33,13 @@ module IndicatorBinance
       data = data.sort_by { |row| row[date_time_key] }
 
       output = []
+      prev_price = data.shift[price_key]
       prev_avg = nil
       price_changes = []
       smoothing_period = period - 1
 
-      data.each_with_index do |v, index|
-        next if index == 0
-
-        price_change = v[price_key] - data[index - 1][price_key]
+      data.each do |v|
+        price_change = (v[price_key] - prev_price)
         price_changes << price_change
 
         if price_changes.size == period
@@ -76,9 +76,11 @@ module IndicatorBinance
           prev_avg = { gain: avg_gain, loss: avg_loss }
           price_changes.shift
         end
+
+        prev_price = v[price_key]
       end
 
-      output.last
+      output.sort_by(&:start_time).reverse.first
     end
   end
 end
