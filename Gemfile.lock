@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    technical-analysis (0.2.3)
+    indicator-binance (0.2.8)
 
 GEM
   remote: https://rubygems.org/
@@ -28,10 +28,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
+  indicator-binance!
   rake (~> 12.3)
   rspec (~> 3.0)
-  technical-analysis!
   yard (~> 0.9.20)
 
 BUNDLED WITH
-   1.17.1
+   1.17.3
