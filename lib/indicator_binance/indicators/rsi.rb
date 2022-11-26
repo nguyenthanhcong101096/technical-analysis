@@ -71,7 +71,7 @@ module IndicatorBinance
 
           start_time = Time.at(v[date_time_key] / 1000).to_s
 
-          output << OBJECT.new(start_time, period, rsi)
+          output << OBJECT.new(start_time, period, rsi.round(precision))
 
           prev_avg = { gain: avg_gain, loss: avg_loss }
           price_changes.shift
