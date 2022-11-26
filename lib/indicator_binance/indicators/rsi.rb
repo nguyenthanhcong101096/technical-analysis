@@ -51,14 +51,14 @@ module IndicatorBinance
     # @param date_time_key [Symbol] The hash key for the date time data. Default :date_time
     #
     # @return [Array<RsiValue>] An array of RsiValue instances
-    def self.calculate(data, period: 14, price_key: :close_price, date_time_key: :start_time)
+    def self.calculate(data: data, period: 14, price_key: :close_price, date_time_key: :start_time)
       period = period.to_i
       price_key = price_key.to_sym
       Validation.validate_numeric_data(data, price_key)
       Validation.validate_length(data, min_data_size(period: period))
       Validation.validate_date_time_key(data, date_time_key)
 
-      data = data.sort_by { |row| row[date_time_key] }
+      data = data.sort_by { |row| -row[date_time_key] }
 
       output = []
       prev_price = data.shift[price_key]
@@ -99,7 +99,9 @@ module IndicatorBinance
             rsi = (100.00 - (100.00 / (1.00 + rs)))
           end
 
-          output << RsiValue.new(date_time: v[date_time_key], rsi: rsi)
+          start_time = Time.at(v[date_time_key] / 1000).to_s
+
+          output << RsiValue.new(date_time: start_time, rsi: rsi)
 
           prev_avg = { gain: avg_gain, loss: avg_loss }
           price_changes.shift
@@ -108,7 +110,7 @@ module IndicatorBinance
         prev_price = v[price_key]
       end
 
-      output.sort_by(&:date_time).reverse
+      output.sort_by(&:date_time)
     end
 
   end
