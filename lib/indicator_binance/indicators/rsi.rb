@@ -23,7 +23,7 @@ module IndicatorBinance
       period.to_i + 1
     end
 
-    def self.calculate(data:, period: 14, price_key: :close_price, date_time_key: :start_time)
+    def self.calculate(data:, period: 14, price_key: :close_price, date_time_key: :start_time, precision: 2)
       period = period.to_i
       price_key = price_key.to_sym
       Validation.validate_numeric_data(data, price_key)
