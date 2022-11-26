@@ -1,7 +1,7 @@
 module IndicatorBinance
-  MA   = Struct.new(:start_time, :value)
-  SMA  = Struct.new(:current, :previous)
-  DSMA = Struct.new(:start_time, :small, :big)
+  OBJECT = Struct.new(:start_time, :value)
+  SMA    = Struct.new(:current, :previous)
+  DSMA   = Struct.new(:sma_small, :sma_big)
 
   class Sma < Indicator
     def self.indicator_symbol
@@ -38,20 +38,20 @@ module IndicatorBinance
       )
     end
 
-    def self.double_sma(data = [], small_period = 5, big_period = 10)
+    def self.double_sma(data: [], small_period: 5, big_period: 10)
       sma_small = single_sma(data: data, period: small_period)
       sma_big   = single_sma(data: data, period: big_period)
-      current   = DSMA.new(sma_small.current.start_time, sma_small.current.value, sma_big.current.value)
-      pervious  = DSMA.new(sma_small.previous.start_time, sma_small.previous.value, sma_big.previous.value)
+      current   = DSMA.new(sma_small.current, sma_big.current)
+      pervious  = DSMA.new(sma_big.previous,  sma_big.previous)
 
       SMA.new(current, pervious)
     end
 
     def self.sma_value(data, date_time_key, price_key)
       start_time = Time.at(data.first[date_time_key] / 1000).to_s
-      value_sma  = ArrayHelper.average(data.map { |i| i[price_key]})
+      value_sma  = ArrayHelper.average(data.map { |i| i[price_key]}).to_f
     
-      MA.new(start_time, value_sma)
+      OBJECT.new(start_time, value_sma)
     end
   end
 end

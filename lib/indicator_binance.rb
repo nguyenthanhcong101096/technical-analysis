@@ -1,5 +1,6 @@
 # Helpers
 require 'indicator_binance/helpers/array_helper'
+require 'indicator_binance/helpers/data_helper'
 require 'indicator_binance/helpers/stock_calculation'
 require 'indicator_binance/helpers/validation'
 
