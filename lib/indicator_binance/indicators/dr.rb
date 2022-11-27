@@ -49,7 +49,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<DrValue>] An array of DrValue instances
-    def self.calculate(data, price_key: :value)
+    def self.calculate(data, price_key: :close_price)
       price_key = price_key.to_sym
       Validation.validate_numeric_data(data, price_key)
       Validation.validate_length(data, min_data_size({}))

@@ -51,7 +51,7 @@ module IndicatorBinance
     # @param date_time_key [Symbol] The hash key for the date time data. Default :date_time
     #
     # @return [Array<WmaValue>] An array of WmaValue instances
-    def self.calculate(data, period: 30, price_key: :value, date_time_key: :date_time)
+    def self.calculate(data, period: 30, price_key: :close_price, date_time_key: :start_time)
       period = period.to_i
       price_key = price_key.to_sym
       date_time_key = date_time_key.to_sym

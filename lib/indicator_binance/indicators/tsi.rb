@@ -51,7 +51,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<TsiValue>] An array of TsiValue instances
-    def self.calculate(data, low_period: 13, high_period: 25, price_key: :value)
+    def self.calculate(data, low_period: 13, high_period: 25, price_key: :close_price)
       low_period = low_period.to_i
       high_period = high_period.to_i
       price_key = price_key.to_sym

@@ -57,7 +57,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<KstValue>] An array of KstValue instances
-    def self.calculate(data, roc1: 10, roc2: 15, roc3: 20, roc4: 30, sma1: 10, sma2: 10, sma3: 10, sma4: 15, price_key: :value)
+    def self.calculate(data, roc1: 10, roc2: 15, roc3: 20, roc4: 30, sma1: 10, sma2: 10, sma3: 10, sma4: 15, price_key: :close_price)
       roc1 = roc1.to_i
       roc2 = roc2.to_i
       roc3 = roc3.to_i

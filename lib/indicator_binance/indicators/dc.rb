@@ -50,7 +50,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<DcValue>] An array of DcValue instances
-    def self.calculate(data, period: 20, price_key: :value)
+    def self.calculate(data, period: 20, price_key: :close_price)
       period = period.to_i
       price_key = price_key.to_sym
       Validation.validate_numeric_data(data, price_key)

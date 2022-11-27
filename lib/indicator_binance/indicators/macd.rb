@@ -52,7 +52,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<MacdValue>] An array of MacdValue instances
-    def self.calculate(data, fast_period: 12, slow_period: 26, signal_period: 9, price_key: :value)
+    def self.calculate(data, fast_period: 12, slow_period: 26, signal_period: 9, price_key: :close_price)
       fast_period = fast_period.to_i
       slow_period = slow_period.to_i
       signal_period = signal_period.to_i

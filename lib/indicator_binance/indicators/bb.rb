@@ -52,7 +52,7 @@ module IndicatorBinance
     # @param price_key [Symbol] The hash key for the price data. Default :value
     #
     # @return [Array<BbValue>] An array of BbValue instances
-    def self.calculate(data, period: 20, standard_deviations: 2, price_key: :value)
+    def self.calculate(data, period: 20, standard_deviations: 2, price_key: :close_price)
       period = period.to_i
       standard_deviations = standard_deviations.to_f
       price_key = price_key.to_sym
