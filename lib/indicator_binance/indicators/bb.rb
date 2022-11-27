@@ -48,7 +48,7 @@ module IndicatorBinance
         lb = mb - standard_deviations * sd
 
         BbValue.new(
-          start_time: start_time = Time.at(data.first[date_time_key] / 1000).to_s,
+          start_time: Time.at(data.first[date_time_key] / 1000).to_s,
           lower_band: lb.round(precision),
           middle_band: mb.round(precision),
           upper_band: ub.round(precision),
