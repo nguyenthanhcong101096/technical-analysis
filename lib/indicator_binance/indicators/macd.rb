@@ -59,9 +59,9 @@ module IndicatorBinance
 
               output << MacdValue.new(
                 start_time: Time.at(v[date_time_key] / 1000).to_s,
-                macd_line: macd,
-                signal_line: signal,
-                macd_histogram: macd - signal,
+                macd_line: macd.round(precision),
+                signal_line: signal.round(precision),
+                macd_histogram: (macd - signal).round(precision),
               )
 
               macd_values.shift
